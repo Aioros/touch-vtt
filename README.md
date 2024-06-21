@@ -1,6 +1,8 @@
-![Foundry Version 0.8.6](https://img.shields.io/badge/Foundry%20Version-0.8.6-green)
+![Foundry v12](https://img.shields.io/badge/Foundry-v12-green)
 
 # TouchVTT
+
+*This is a fork of the original TouchVTT module by [Oromis](https://github.com/Oromis/touch-vtt/).*
 
 Introduces touch screen support to FoundryVTT. If you have a tablet, a PC or a TV equipped with a 
 touch screen and want to play on FoundryVTT, this module is for you!
@@ -13,7 +15,7 @@ Features:
  - Rotate tokens using the (optional) directional buttons added to the token right-click menu (HUD)
  - Target hostile tokens quickly by tapping them.
  - Use your ruler with waypoints and move your token along the measured path using a Touch-Only UI
- - Need to right-click to access the corresponding functionality on a game world entity? Just long-press (0.5s) 
+ - Need to right-click to access the corresponding functionality on a game world entity? Just long-press (0.3s) 
     with your finger.
  - Move windows around and interact with their content intuitively
  - Removing measurement templates usually requires you to press the DELETE key on your keyboard. TouchVTT 
@@ -83,6 +85,7 @@ when those features are locked in "Lock View".
 
 ### Changelog
 
+- **2.0.0:** Compatibility with FoundryVTT version 11 and 12
 - **1.10.0:** Compatibility with FoundryVTT version 10
 - **1.9.1:** Compatibility with FoundryVTT version 9
 - **1.8.1:** Fixed missing template for Measurement HUD, added German Translation files
@@ -102,6 +105,8 @@ when those features are locked in "Lock View".
 - **1.0.0:** Initial release. Zooming & panning with 2 fingers, token movement
 
 ### About
+
+*The about section here is from the original owner and developer of this module (up to version 1.10). Feel free to support him, he made most of the work.*
 
 Disclaimer: I also made the "Touch20" browser extension for Roll20, TouchVTT is my contribution to FoundryVTT.
 
