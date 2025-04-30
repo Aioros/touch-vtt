@@ -21,6 +21,7 @@ export const PAUSE_BUTTON_SETTING = "pauseButton"
 export const REMOVE_HOVER_EFFECTS = "removeHover"
 
 export const DISABLE_DBLCLICK = "disableDblclick"
+export const DISABLE_DRAGDROP = "disableDragDrop"
 
 export const EASY_TARGET_SETTING = "easyTarget"
 export const EASY_TARGET_OFF = "off"
@@ -243,6 +244,20 @@ export function registerTouchSettings() {
     default: "override_off",
   })
 
+  game.settings.register(MODULE_NAME, DISABLE_DRAGDROP + "_override", {
+    name: "Disable Drag and Drop",
+    hint: "Disable touch drag and drop. This might help with accidental copying of items",
+    scope: "world",
+    config: false,
+    type: String,
+    choices: {
+      ["on"]: "On",
+      ["off"]: "Off",
+      ["override_off"]: "Don't override"
+    },
+    default: "override_off",
+  })
+
   game.settings.register(MODULE_NAME, CANVAS_RIGHT_CLICK_TIMEOUT + "_override", {
     name: "Canvas right-click timer (ms)",
     hint: "How long a touch on the canvas takes to become a right click",
@@ -399,6 +414,16 @@ export function registerTouchSettings() {
   game.settings.register(MODULE_NAME, DISABLE_DBLCLICK, {
     name: "Disable Double Clicks" + (game.settings.get(MODULE_NAME, DISABLE_DBLCLICK + "_override") == "override_off" ? "" : " *"),
     hint: "Disable double clicks on the canvas. This might help with accidental opening of actor sheets on IR frames",
+    scope: "client",
+    config: true,
+    requiresReload: true,
+    type: Boolean,
+    default: false,
+  })
+
+  game.settings.register(MODULE_NAME, DISABLE_DRAGDROP, {
+    name: "Disable Drag and Drop" + (game.settings.get(MODULE_NAME, DISABLE_DRAGDROP + "_override") == "override_off" ? "" : " *"),
+    hint: "Disable touch drag and drop. This might help with accidental copying of items",
     scope: "client",
     config: true,
     requiresReload: true,
