@@ -83,6 +83,7 @@ class CanvasTouchPointerEventsManager extends TouchPointerEventsManager {
       // Force hover check on every placeable in the active layer on every pointerdown/pointerup
       // Also pointermove, but only our own
       Array("pointerdown", "pointerup", "pointermove").forEach(e => {
+        const MouseInteractionManager = foundry.canvas?.interaction?.MouseInteractionManager ?? MouseInteractionManager
         document.body.addEventListener(e, (evt) => {
           if (evt.touchvttTrusted || evt.type !== "pointermove" && (evt.isTrusted && (evt instanceof TouchEvent || ["touch", "pen"].includes(evt.pointerType)) && evt.target === element)) {
             const mousePos = canvas.mousePosition
