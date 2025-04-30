@@ -53,9 +53,10 @@
 }
 
 #touch-measurement-hud .control-icon, #touch-measured-template-hud .control-icon {
-    width: 60px;
-    flex-basis: 60px;
-    line-height: 60px;
+    flex: 0 0 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 #touch-measurement-hud.touch-measurement-hud-left {

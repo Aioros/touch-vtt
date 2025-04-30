@@ -86,7 +86,7 @@ class WindowAppAdapter {
       if (evt.target.closest(".app, .application")) {
         this.lastPointerDownCoords = {x: evt.clientX, y: evt.clientY}
         Array("pointermove", "touchmove", "mousemove").forEach(e => {
-          document.getElementById("combat-tracker").addEventListener(e, cancelMoveEvent, true)
+          document.getElementById("combat-tracker")?.addEventListener(e, cancelMoveEvent, true)
         })
       }
     }, true)
@@ -94,7 +94,7 @@ class WindowAppAdapter {
       if (evt.target.closest(".app, .application")) {
         this.lastPointerDownCoords = null
         Array("pointermove", "touchmove", "mousemove").forEach(e => {
-          document.getElementById("combat-tracker").removeEventListener(e, cancelMoveEvent, true)
+          document.getElementById("combat-tracker")?.removeEventListener(e, cancelMoveEvent, true)
         })
       }
     }, true)
@@ -131,7 +131,8 @@ class WindowAppAdapter {
     /*** Double-click management - End ***/
     
     // Avoid error on Drag and Drop polyfill
-    wrapMethod("DragDrop.prototype._handleDragStart", function(originalMethod, event) {
+    const DragDropPath = game.release.generation < 13 ? "DragDrop" : "foundry.applications.ux.DragDrop.implementation"
+    wrapMethod(`${DragDropPath}.prototype._handleDragStart`, function(originalMethod, event) {
     if (event.dataTransfer.items) {
       return originalMethod.call(this, event)
     } else {
