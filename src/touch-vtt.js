@@ -7,7 +7,7 @@ import WindowAppAdapter from './logic/WindowAppAdapter.js'
 import {dispatchModifiedEvent} from './logic/FakeTouchEvent.js'
 
 import '../style/touch-vtt.css'
-import {registerTouchSettings, getSetting, CORE_FUNCTIONALITY, DEBUG_MODE_SETTING, REMOVE_HOVER_EFFECTS, CANVAS_LONG_PRESS_TIMEOUT, CANVAS_RIGHT_CLICK_TIMEOUT, DISABLE_DBLCLICK} from './config/TouchSettings.js'
+import {registerTouchSettings, getSetting, CORE_FUNCTIONALITY, DEBUG_MODE_SETTING, REMOVE_HOVER_EFFECTS, CANVAS_LONG_PRESS_TIMEOUT, CANVAS_RIGHT_CLICK_TIMEOUT, DISABLE_DBLCLICK, DISABLE_DRAGDROP} from './config/TouchSettings.js'
 import {MeasuredTemplateManager, installMeasurementTemplateEraser} from './tools/MeasuredTemplateManagement.js'
 import {callbackForWallTools, installWallToolsControls, initWallTools} from './tools/WallTools.js'
 import {callbackForSnapToGrid, installSnapToGrid} from './tools/SnapToGridTool.js'
@@ -92,11 +92,13 @@ Hooks.once('init', () => {
 
   if (getSetting(CORE_FUNCTIONALITY) || false) {
 
-    ["renderDocumentDirectory", "renderDirectoryApplication", "changeSidebarTab"].forEach(hook => {
-      Hooks.on(hook, function(directory) {
-        windowAppAdapter.fixDirectoryScrolling(directory, _usingTouch)
+    if (!getSetting(DISABLE_DRAGDROP)) {
+      ["renderDocumentDirectory", "renderDirectoryApplication", "changeSidebarTab"].forEach(hook => {
+        Hooks.on(hook, function(directory) {
+          windowAppAdapter.fixDirectoryScrolling(directory, _usingTouch)
+        })
       })
-    })
+    }
 
     initEnlargeButtonTool()
     initDirectionalArrows()
