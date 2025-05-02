@@ -91,14 +91,14 @@ class CanvasTouchPointerEventsManager extends TouchPointerEventsManager {
             canvas.activeLayer.placeables.forEach(p => {
               if (!p.bounds.contains(mousePos.x, mousePos.y)) {
                 if (p.hover && p.mouseInteractionManager.state < mouseInteractionManager.INTERACTION_STATES.DRAG) {
-                  p._onHoverOut(new PointerEvent("pointerleave", {buttons: 0}))
+                  p._onHoverOut(new PIXI.FederatedPointerEvent())
                 }
               }
             })
             canvas.activeLayer.placeables.forEach(p => {
               if (p.bounds.contains(mousePos.x, mousePos.y)) {
                 if (!p.hover) {
-                  p._onHoverIn(new PointerEvent("pointerenter", {buttons: 0}))
+                  p._onHoverIn(new PIXI.FederatedPointerEvent())
                 }
               }
             })

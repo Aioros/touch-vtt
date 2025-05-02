@@ -28,11 +28,12 @@ function installChainingHook() {
 export function installWallToolsControls(menuStructure) {
   addSceneControlButton(menuStructure, "walls", {
     // Simulates holding ctrl while drawing walls
-    name: "tile",
+    name: "chain",
     title: "TOUCHVTT.ToggleWallChain",
     icon: "fas fa-link",
     toggle: true,
     active: chainingActive,
+    onClick: (active) => chainingActive = active,
     onChange: (event, active) => chainingActive = active
   })
   addSceneControlButton(menuStructure, "walls", {
@@ -46,7 +47,7 @@ export function installWallToolsControls(menuStructure) {
   })
   addSceneControlButton(menuStructure, "walls", {
     // Simulate hitting del with a wall selected
-    name: "Delete",
+    name: "delete",
     title: "TOUCHVTT.DeleteWall",
     icon: "fas fa-eraser",
     button: true,
