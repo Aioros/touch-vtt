@@ -61,6 +61,8 @@ html {
     height: 50px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin: 4px;
 }
 
 #touch-measurement-hud.touch-measurement-hud-left {

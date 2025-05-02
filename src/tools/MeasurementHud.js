@@ -45,39 +45,38 @@ class TouchMeasurementHud extends Application {
 
   activateListeners(html) {
     const element = html[0] ?? html
-    element.querySelector(".waypoint").addEventListener("pointerdown", (evt) => {
-      if (canvas.tokens._draggedToken) {
-        // This is the v13+ drag ruler
-        const fakeEvent = new PIXI.FederatedEvent(evt)
-        fakeEvent.ctrlKey = true
-        foundry.utils.setProperty(fakeEvent, "interactionData.origin", this._worldPosition)
-        canvas.tokens._draggedToken._onDragLeftClick(fakeEvent)
-      } else {
-        // Regular old ruler
-        const ruler = FoundryCanvas.ruler
-        if (ruler != null) {
-          if (game.release.generation < 13) {
-            ruler._addWaypoint(this._worldPosition)
-          } else {
-            ruler.path = [...ruler.path.slice(0, -1), this._worldPosition, this._worldPosition]
-          }
-          this.render()
-        }
-      }
-    })
 
-    element.querySelector(".move")?.addEventListener("pointerdown", () => {
-      const ruler = FoundryCanvas.ruler
+    element.querySelector(".control-icon")?.addEventListener("pointerdown", (evt) => {
+      if (evt.target.closest(".waypoint")) {
+        if (canvas.tokens._draggedToken) {
+          // This is the v13+ drag ruler
+          const fakeEvent = new PIXI.FederatedEvent(evt)
+          fakeEvent.ctrlKey = true
+          foundry.utils.setProperty(fakeEvent, "interactionData.origin", this._worldPosition)
+          canvas.tokens._draggedToken._onDragLeftClick(fakeEvent)
+        } else {
+          // Regular old ruler
+          const ruler = FoundryCanvas.ruler
+          if (ruler != null) {
+            if (game.release.generation < 13) {
+              ruler._addWaypoint(this._worldPosition)
+            } else {
+              ruler.path = [...ruler.path.slice(0, -1), this._worldPosition, this._worldPosition]
+            }
+            this.render()
+          }
+        }
+      } else if (evt.target.closest(".move")) {
+        const ruler = FoundryCanvas.ruler
       if (ruler != null && typeof ruler.moveToken === "function") {
         const token = ruler.token || ruler._getMovementToken()
         token.document.locked = false
         ruler.moveToken()
         this.render()
       }
-    })
-
-    element.querySelector(".cancel")?.addEventListener("pointerdown", (evt) => {
-      canvas.tokens._draggedToken.mouseInteractionManager.cancel()
+      } else if (evt.target.closest(".cancel")) {
+        canvas.tokens._draggedToken.mouseInteractionManager.cancel()
+      }
     })
   }
 
@@ -169,22 +168,11 @@ export function initMeasurementHud({ touchPointerEventsManager }) {
     canvas.hud.touchMeasurement = new TouchMeasurementHud({ touchPointerEventsManager })
     const rulerPath = game.release.generation < 13 ? "Ruler" : "foundry.canvas.interaction.Ruler"
 
-    wrapMethod(`${rulerPath}.prototype._onMouseMove`, function (wrapped, event, ...args) {
-      // I think here we're storing "touch" or "mouse" somewhere in the interactionData so we can check it later
-      if (event.interactionData != null && event.interactionData.destination != null) {
-        if (game.release.generation < 12) {
-          event.interactionData.destination.originType = event.pointerType
-        } else {
-          event.interactionData.destination.originType = event.data?.originalEvent?.pointerType
-        }
-      }
-      return wrapped.call(this, event, ...args)
-    })
-
     if (game.release.generation < 13) {
       wrapMethod(`${rulerPath}.prototype.measure`, function (wrapped, destination, ...args) {
         const segments = wrapped.call(this, destination, ...args)
-        if (Array.isArray(segments) && isOwnRuler(this) && isEnabled() && destination?.originType === "touch") {
+        //if (Array.isArray(segments) && isOwnRuler(this) && isEnabled() && destination?.originType === "touch") {
+        if (Array.isArray(segments) && isOwnRuler(this) && isEnabled() && document.body.classList.contains("touchvtt-using-touch")) {
           if (segments.length > 0) {
             const lastSegment = segments[segments.length - 1]
             canvas.hud.touchMeasurement.show(lastSegment.ray.B)
