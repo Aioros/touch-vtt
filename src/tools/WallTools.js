@@ -58,7 +58,7 @@ export function installWallToolsControls(menuStructure) {
 
 export function callbackForWallTools(modifier) {
   const keyboardManager = game.release.generation < 13 ? KeyboardManager : foundry.helpers.interaction.KeyboardManager
-  if (modifier === keyboardManager.MODIFIER_KEYS.CONTROL && ui.controls.control.name == "walls" && chainingActive) {
+  if ((modifier === "CONTROL" || keyboardManager.MODIFIER_KEYS.CONTROL) && ui.controls.control.name === "walls" && chainingActive) {
     return true
   } else {
     return false

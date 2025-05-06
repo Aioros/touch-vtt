@@ -197,7 +197,7 @@ Hooks.once("init", () => {
 
     // This wrap is used for wall chaining: when the chain button is active, pretend we are holding Ctrl
     wrapMethod("game.keyboard.isModifierActive", function(originalMethod, modifier) {
-      var result = originalMethod.call(this, modifier)
+      let result = originalMethod.call(this, modifier)
       result ||= callbackForWallTools(modifier)
       return result
     }, "MIXED")
