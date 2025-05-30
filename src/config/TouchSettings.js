@@ -79,7 +79,7 @@ class SettingsOverrideMenu extends FormApplication {
         [...touchVttOverrideSettings]
           .map(s => {
             s[0] = s[0].split(".")[1]
-            var settingValue = game.settings.get(MODULE_NAME, s[0])
+            const settingValue = game.settings.get(MODULE_NAME, s[0])
             s[1].currentValue = settingValue
             return s
           })
@@ -491,16 +491,29 @@ export function registerTouchSettings() {
 
   // Hook to disable overridden settings
   Hooks.on("renderSettingsConfig", (settingsConfig, settingsElem, settingsInfo) => {
-    var touchVttSettings = settingsInfo.categories.find(c => c.id == MODULE_NAME).settings
+    settingsElem = settingsElem.get?.(0) ?? settingsElem;
+    let touchVttSettings
+    if (game.release.generation <= 12) {
+      touchVttSettings = settingsInfo.categories.find(c => c.id == MODULE_NAME).settings
+    } else {
+      touchVttSettings = settingsInfo.categories[MODULE_NAME].entries.filter(e => !e.menu).map(e => ({id: e.field.name, name: e.field.label}))
+    }
     let overridePresent = false
     touchVttSettings.forEach(setting => {
       let overridden = setting.name.endsWith("*")
-      let input = settingsElem.find(`[name="${setting.id}"]`)
-      input.prop("disabled", overridden)
+      let input = settingsElem.querySelector(`[name="${setting.id}"]`)
+      input.disabled = overridden
       overridePresent |= overridden
     })
     if (overridePresent) {
-      settingsElem.find(`[data-tab="${MODULE_NAME}"] h2`).after($("<small>").html("Some settings, indicated with an asterisk (*), are being overridden by the GM. The values selected here might not be accurate."))
+      const small = document.createElement("small");
+      small.innerHTML = "Some settings, indicated with an asterisk (*), are being overridden by the GM. The values selected here might not be accurate."
+      const target = settingsElem.querySelector(`[data-tab="${MODULE_NAME}"] h2`)
+      if (target) {
+        settingsElem.querySelector(`section[data-tab="${MODULE_NAME}"] h2`).after(small)
+      } else {
+        settingsElem.querySelector(`section[data-tab="${MODULE_NAME}"]`).prepend(small)
+      }
     }
   })
 
