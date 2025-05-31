@@ -188,19 +188,21 @@ export function registerTouchSettings() {
     default: "override_off",
   })
 
-  game.settings.register(MODULE_NAME, LARGE_BUTTONS_SETTING + "_override", {
-    name: "Enlarge buttons in on-screen UI",
-    hint: "Increases the size of menu bar buttons to make them easier to use with touch controls",
-    scope: "world",
-    config: false,
-    type: String,
-    choices: {
-      ["on"]: "On",
-      ["off"]: "Off",
-      ["override_off"]: "Don't override"
-    },
-    default: "override_off",
-  })
+  if (game.release.generation <= 12) {
+    game.settings.register(MODULE_NAME, LARGE_BUTTONS_SETTING + "_override", {
+      name: "Enlarge buttons in on-screen UI",
+      hint: "Increases the size of menu bar buttons to make them easier to use with touch controls",
+      scope: "world",
+      config: false,
+      type: String,
+      choices: {
+        ["on"]: "On",
+        ["off"]: "Off",
+        ["override_off"]: "Don't override"
+      },
+      default: "override_off",
+    })
+  }
 
   game.settings.register(MODULE_NAME, PAUSE_BUTTON_SETTING + "_override", {
     name: "Show a play/pause button",
@@ -381,15 +383,17 @@ export function registerTouchSettings() {
     default: MEASUREMENT_HUD_RIGHT,
   })
 
-  game.settings.register(MODULE_NAME, LARGE_BUTTONS_SETTING, {
-    name: "Enlarge buttons in on-screen UI" + (game.settings.get(MODULE_NAME, LARGE_BUTTONS_SETTING + "_override") == "override_off" ? "" : " *"),
-    hint: "Increases the size of menu bar buttons to make them easier to use with touch controls",
-    scope: "client",
-    config: true,
-    type: Boolean,
-    default: false,
-    onChange: enabled => updateButtonSize(enabled),
-  })
+  if (game.release.generation <= 12) {
+    game.settings.register(MODULE_NAME, LARGE_BUTTONS_SETTING, {
+      name: "Enlarge buttons in on-screen UI" + (game.settings.get(MODULE_NAME, LARGE_BUTTONS_SETTING + "_override") == "override_off" ? "" : " *"),
+      hint: "Increases the size of menu bar buttons to make them easier to use with touch controls",
+      scope: "client",
+      config: true,
+      type: Boolean,
+      default: false,
+      onChange: enabled => updateButtonSize(enabled),
+    })
+  }
 
   game.settings.register(MODULE_NAME, PAUSE_BUTTON_SETTING, {
     name: "Show a play/pause button" + (game.settings.get(MODULE_NAME, PAUSE_BUTTON_SETTING + "_override") == "override_off" ? "" : " *"),

@@ -69,16 +69,18 @@ html {
 
 }
 
-#controls ol.control-tools,
-#scene-controls menu {
-    margin-top: 30px;
-}
-
 #touch-vtt-controls {
     pointer-events: all;
     display: flex;
-    position: absolute;
-    width: 100%;
+    max-width: 116px;
+
+    #ui-left-column-1 > &:not(:has(*)) {
+        margin-top: -16px;
+    }
+
+    #ui-left > &:has(*) {
+        padding: 0 15px 15px;
+    }
 }
 
 #touch-vtt-controls.hidden {
@@ -89,7 +91,6 @@ html {
     line-height: 18px;
     font-size: var(--font-size-10);
     width: 100%;
-    max-width: 110px;
     height: 20px;
 }
 

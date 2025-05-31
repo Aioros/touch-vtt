@@ -16,6 +16,9 @@ const largeButtonStyle = `
 #ui-left, #ui-left .ui-control {
   --control-size: 50px;
 }
+#touch-vtt-controls {
+  max-width: 144px;
+}
 `
 
 function createStyleElement() {

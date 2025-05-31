@@ -101,7 +101,9 @@ Hooks.once("init", () => {
       })
     }
 
-    initEnlargeButtonTool()
+    if (game.release.generation <= 12) {
+      initEnlargeButtonTool()
+    }
     initDirectionalArrows()
     measuredTemplateManager.initMeasuredTemplateManagement()
     initWallTools()

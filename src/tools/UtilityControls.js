@@ -6,11 +6,13 @@ export function installUtilityControls() {
   document.querySelector("#touch-vtt-controls")?.remove()
   const controls = document.createElement("div")
   controls.id = "touch-vtt-controls"
+  controls.classList.add("faded-ui")
   controls.classList.toggle("hidden", !getSetting(PAUSE_BUTTON_SETTING))
 
   if (game.user.isGM) {
     // Pause button
-    const pauseButton = document.createElement("button")    
+    const pauseButton = document.createElement("button")
+    pauseButton.classList.add("control", "ui-control")
     const pauseIcon = document.createElement("i")
     pauseIcon.classList.add("fas", game.paused ? "fa-play" : "fa-pause")
     pauseIcon.id = "touch-vtt-togglepause"
@@ -26,7 +28,7 @@ export function installUtilityControls() {
     controls.appendChild(pauseButton)
   }
 
-  document.getElementById(controlsId).prepend(controls)
+  document.getElementById(controlsId).before(controls)
 }
 
 export function toggleUtilityControls(enabled) {
