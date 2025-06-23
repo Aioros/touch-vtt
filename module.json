@@ -13,10 +13,10 @@
       "discord": "MrAioros"
     }
   ],
-  "version": "2.3.4",
+  "version": "",
   "compatibility": {
     "minimum": "11",
-    "verified": "13.344"
+    "verified": "13.345"
   },
   "scripts": [
     "dist/touch-vtt.js"
@@ -37,7 +37,7 @@
     }
   ],
   "url": "https://github.com/Aioros/touch-vtt",
-  "download": "https://github.com/Aioros/touch-vtt/releases/download/v2.3.4/touch-vtt-v2.3.4.zip",
+  "download": "",
   "manifest": "https://github.com/Aioros/touch-vtt/releases/latest/download/module.json",
   "license": "https://www.gnu.org/licenses/gpl-3.0.en.html",
   "readme": "README.md",

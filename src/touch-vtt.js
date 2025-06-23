@@ -118,7 +118,7 @@ Hooks.once("init", () => {
 
     // This wrap gives us control over every MouseInteractionManager
     const mouseInteractionManagerPath = game.release.generation < 13 ? "MouseInteractionManager" : "foundry.canvas.interaction.MouseInteractionManager"
-    wrapMethod(`${mouseInteractionManagerPath}.prototype.callback`, async function (originalMethod, event, ...args) {
+    wrapMethod(`${mouseInteractionManagerPath}.prototype.callback`, function (originalMethod, event, ...args) {
       if (event == "clearTimeouts") {
         clearTimeout(canvasRightClickTimeout)
         clearTimeout(canvasLongPressTimeout)
@@ -141,16 +141,17 @@ Hooks.once("init", () => {
             return
           }
       
+          // Tentative removal - 2025-06-23 (seems to not be needed anymore on v12 and v13)
           // v12+ only: ugly patch to fix annoying issue where a double-click that opens a sheet also sends one of the clicks to an active listener on the sheet.
           // For example, you open an actor sheet, if something clickable is under your finger (icon, action, ability, etc.) it will get wrongly clicked.
           // What we do here is delay the sheet rendering a little bit, and also dispatch a right click on the canvas to avoid a lingering drag select on the placeable.
-          if (game.release.generation >= 12) {
-            if (event === "clickLeft2") {
-              await new Promise(resolve => setTimeout(resolve, 100))
-              canvas.app.view.dispatchEvent(new MouseEvent("contextmenu", {bubbles: true, cancelable: true, view: window, button: 2}))
-              return originalMethod.call(this, event, ...args)
-            }
-          }
+          //if (game.release.generation >= 12) {
+          //  if (event === "clickLeft2") {
+          //    await new Promise(resolve => setTimeout(resolve, 100))
+          //    canvas.app.view.dispatchEvent(new MouseEvent("contextmenu", {bubbles: true, cancelable: true, view: window, button: 2}))
+          //    return originalMethod.call(this, event, ...args)
+          //  }
+          //}
       
           // The right-click timeout is to send a right click on long press (doesn't happen by default on the canvas)
           // The long press timeout is to send a long press event, mostly used for pinging
