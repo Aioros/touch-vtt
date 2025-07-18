@@ -11,7 +11,7 @@ class TouchPointerEventsManager {
         element.addEventListener(eventType, touchHandler, this.getEventListenerOptions())
       } else {
         document.addEventListener(eventType, (event) => {
-          if (event.target.closest(element)) {
+          if (event.target.closest?.(element)) {
             touchHandler(event)
           }
         }, this.getEventListenerOptions())
