@@ -4,10 +4,11 @@ import {getSetting, DIRECTIONAL_ARROWS_ON, DIRECTIONAL_ARROWS_SETTING} from "../
 export function initDirectionalArrows() {
   if (tokenHudExists()) {
     const tokenHUDPath = game.release.generation < 13 ? "TokenHUD" : "foundry.applications.hud.TokenHUD"
-    wrapMethod(`${tokenHUDPath}.prototype.activateListeners`, function (originalMethod, html, ...args) {
+    const method = game.release.generation < 13 ? "activateListeners" : "_onRender"
+    wrapMethod(`${tokenHUDPath}.prototype.${method}`, function (originalMethod, html, ...args) {
       const superResult = originalMethod(html, ...args)
       if (areDirectionalArrowsEnabled() && !getActiveToken()?.document?.lockRotation) {
-        injectArrowHtml(html)
+        injectArrowHtml(method === "activateListeners" ? html : this.element)
       }
       return superResult
     })
@@ -15,9 +16,10 @@ export function initDirectionalArrows() {
 }
 
 function injectArrowHtml(html) {
-  const leftColumn = html.find(".col.left")
-  const middleColumn = html.find(".col.middle")
-  const rightColumn = html.find(".col.right")
+  const jQ = $(html)
+  const leftColumn = jQ.find(".col.left")
+  const middleColumn = jQ.find(".col.middle")
+  const rightColumn = jQ.find(".col.right")
 
   addArrow(middleColumn, 0)
   addArrow(rightColumn, 45)
@@ -49,7 +51,7 @@ function tokenHudExists() {
   const tokenHud = game.release.generation < 13 ? TokenHUD : foundry.applications.hud.TokenHUD
   return typeof tokenHud === "function" &&
     typeof tokenHud.prototype === "object" &&
-    typeof tokenHud.prototype.activateListeners === "function"
+    (typeof tokenHud.prototype.activateListeners === "function" || typeof tokenHud.prototype._onRender === "function")
 }
 
 function getActiveToken() {
