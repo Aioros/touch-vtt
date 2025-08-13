@@ -21,6 +21,8 @@ import {installUtilityControls} from "./tools/UtilityControls"
 
 import {TouchVTTMouseInteractionManager} from "./logic/TouchVTTMouseInteractionManager.js"
 
+import consolere from "console-remote-client"
+
 if (!window.TouchEvent) {
   window.TouchEvent = function() {}
   window.TouchEvent.prototype = {}
@@ -265,5 +267,10 @@ Hooks.on("ready", function () {
       }, true)
     })
   }
+
+  consolere.connect({
+    channel: "touch-vtt-issue-2",
+    redirectDefaultConsoleToRemote: true
+  })
 
 })
