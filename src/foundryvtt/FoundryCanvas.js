@@ -13,7 +13,7 @@ class FoundryCanvas {
     return this.raw.stage.scale.x
   }
 
-  pan({ x, y, zoom }) {
+  pan({ x, y, zoom=this.raw.stage.scale.x }) {
     this.raw.pan({ x, y, scale: zoom })
   }
 
