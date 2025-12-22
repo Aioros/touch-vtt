@@ -46,14 +46,12 @@ class TouchMeasurementHud extends Application {
   activateListeners(html) {
     const element = html[0] ?? html
 
-    element.querySelector(".control-icon")?.addEventListener("pointerdown", (evt) => {
+    element.querySelector(".control-icon")?.addEventListener("pointerup", (evt) => {
       if (evt.target.closest(".waypoint")) {
         if (canvas.tokens._draggedToken) {
           // This is the v13+ drag ruler
-          const fakeEvent = new PIXI.FederatedEvent(evt)
-          fakeEvent.ctrlKey = true
-          foundry.utils.setProperty(fakeEvent, "interactionData.origin", this._worldPosition)
-          canvas.tokens._draggedToken._onDragLeftClick(fakeEvent)
+          const token = canvas.tokens._draggedToken;
+          canvas.tokens._draggedToken._addDragWaypoint(canvas.mousePosition, {snap: canvas.scene.grid !== CONST.GRID_TYPES.GRIDLESS})
         } else {
           // Regular old ruler
           const ruler = FoundryCanvas.ruler
@@ -66,18 +64,22 @@ class TouchMeasurementHud extends Application {
             this.render()
           }
         }
+        evt.preventDefault()
+        evt.stopPropagation();
+        evt.stopImmediatePropagation()
+        return false
       } else if (evt.target.closest(".move")) {
         const ruler = FoundryCanvas.ruler
-      if (ruler != null && typeof ruler.moveToken === "function") {
-        const token = ruler.token || ruler._getMovementToken()
-        token.document.locked = false
-        ruler.moveToken()
-        this.render()
-      }
+        if (ruler != null && typeof ruler.moveToken === "function") {
+          const token = ruler.token || ruler._getMovementToken()
+          token.document.locked = false
+          ruler.moveToken()
+          this.render()
+        }
       } else if (evt.target.closest(".cancel")) {
         canvas.tokens._draggedToken.mouseInteractionManager.cancel()
       }
-    })
+    }, true)
   }
 
   async show(worldPosition) {
