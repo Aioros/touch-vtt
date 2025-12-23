@@ -50,8 +50,9 @@ class TouchMeasurementHud extends Application {
       if (evt.target.closest(".waypoint")) {
         if (canvas.tokens._draggedToken) {
           // This is the v13+ drag ruler
-          const token = canvas.tokens._draggedToken;
-          canvas.tokens._draggedToken._addDragWaypoint(canvas.mousePosition, {snap: canvas.scene.grid !== CONST.GRID_TYPES.GRIDLESS})
+          Object.values(canvas.tokens._draggedToken.mouseInteractionManager.interactionData.contexts).forEach(context => {
+            context.token._addDragWaypoint(context.clonedToken.transform.position, {snap: canvas.scene.grid !== CONST.GRID_TYPES.GRIDLESS})
+          })
         } else {
           // Regular old ruler
           const ruler = FoundryCanvas.ruler
