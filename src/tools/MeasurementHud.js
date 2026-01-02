@@ -66,7 +66,7 @@ class TouchMeasurementHud extends Application {
           }
         }
         evt.preventDefault()
-        evt.stopPropagation();
+        evt.stopPropagation()
         evt.stopImmediatePropagation()
         return false
       } else if (evt.target.closest(".move")) {

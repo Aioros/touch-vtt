@@ -137,6 +137,15 @@ Hooks.once("init", () => {
       
         if (args[0].pointerType === "touch" || args[0].nativeEvent.touchvttTrusted) {
 
+          if (event === "dragLeftMove") {
+            // Prevent movement when using a different pointer id than the initiating one
+            // Avoids issues with the ruler waypoints (and probably others too)
+            args[0].interactionData.pointerId ??= args[0].pointerId
+            if (args[0].pointerId !== args[0].interactionData.pointerId) {
+              return
+            }
+          }
+
           if (event === "clickLeft2" && getSetting(DISABLE_DBLCLICK)) {
             return
           }
